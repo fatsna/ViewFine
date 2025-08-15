@@ -1,0 +1,20 @@
+# Visual Studio
+ViewFine/.vs/
+ViewFine/*.user
+ViewFine/*.suo
+
+# Build directories
+ViewFine/bin/
+ViewFine/obj/
+ViewFine/Debug/
+ViewFine/Release/
+
+# NuGet
+ViewFine/packages/
+*.nupkg
+
+# Others
+*.log
+*.cache
+*.dll
+*.exe
