@@ -1,12 +1,33 @@
-﻿<Window x:Class="ViewFine.MainWindow"
+<Window x:Class="ViewFine.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ViewFine"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="별표28 뷰어" Height="600" Width="980">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
+            <Button x:Name="BtnLoad" Content="DB 연결/로딩" Padding="16,6" Click="BtnLoad_Click"/>
+            <TextBlock x:Name="TxtStatus" Margin="12,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="취소처분">
+                <DataGrid x:Name="GridCancel"
+                  AutoGenerateColumns="True"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"/>
+            </TabItem>
+            <TabItem Header="정지처분(가)">
+                <DataGrid x:Name="GridSuspend"
+                  AutoGenerateColumns="True"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
