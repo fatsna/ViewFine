@@ -18,9 +18,9 @@ namespace ViewFine.Views
     /// <summary>
     /// TrendViewModel.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class TrendViewModel : UserControl
+    public partial class TrendsView : UserControl
     {
-        public TrendViewModel()
+        public TrendsView()
         {
             InitializeComponent();
         }

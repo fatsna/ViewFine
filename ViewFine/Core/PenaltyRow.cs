@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ViewFine.Core
+﻿namespace ViewFine.Core
 {
-    internal class PenaltyRow
-    {
-    }
+    public record PenaltyRow(
+        string category,     // 취소 / 정지(가)
+        string item_no,
+        string label,
+        string law,
+        int? points,
+        string revised_date
+    );
 }

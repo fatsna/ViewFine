@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViewFine.Core
+namespace ViewFine.Navigation
 {
-    internal interface IDbService
+    public interface INavigationService<TViewModel> where TViewModel : class
     {
+        void Navigate();
     }
 }
+

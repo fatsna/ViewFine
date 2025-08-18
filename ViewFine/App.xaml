@@ -1,9 +1,74 @@
 ﻿<Application x:Class="ViewFine.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ViewFine"
-             StartupUri="Views/MainWindow.xaml">
+             xmlns:v="clr-namespace:ViewFine.Views"
+             xmlns:vm="clr-namespace:ViewFine.ViewModels">
     <Application.Resources>
-         
+
+        <Style x:Key="WatermarkTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                            <!-- Tag에 넣은 문자열을 워터마크로 표시 -->
+                            <TextBlock x:Name="Watermark"
+                         Text="{TemplateBinding Tag}"
+                         Margin="6,3,0,0"
+                         Foreground="#80FFFFFF"
+                         IsHitTestVisible="False"
+                         Visibility="Collapsed"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <!-- 내용이 비어 있고 포커스 없을 때만 워터마크 보이기 -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value=""/>
+                                    <Condition Binding="{Binding IsKeyboardFocused, RelativeSource={RelativeSource TemplatedParent}}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="Watermark" Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Light Navy Theme -->
+        <SolidColorBrush x:Key="PrimaryNavy" Color="#FF1E2A44"/>
+        <SolidColorBrush x:Key="PrimaryNavyLight" Color="#FF2B3B63"/>
+        <SolidColorBrush x:Key="OnNavy" Color="#FFFFFFFF"/>
+
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="{StaticResource PrimaryNavy}"/>
+            <Setter Property="Foreground" Value="{StaticResource OnNavy}"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryNavyLight}"/>
+            <Setter Property="Foreground" Value="{StaticResource OnNavy}"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+
+        <!-- VM -> View 매핑 -->
+        <DataTemplate DataType="{x:Type vm:ListViewModel}">
+            <v:ListView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TrendsViewModel}">
+            <v:TrendsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CalculatorViewModel}">
+            <v:CalculatorView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:UpdatesViewModel}">
+            <v:UpdatesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:FaqViewModel}">
+            <v:FaqView/>
+        </DataTemplate>
+
     </Application.Resources>
 </Application>
