@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ViewFine.Navigation;
 using ViewFine.Services;
 using ViewFine.ViewModels;
+using ViewFine.Models;
 
 namespace ViewFine.Composition
 {
@@ -15,6 +16,7 @@ namespace ViewFine.Composition
             sc.AddSingleton<NavigationStore>();
 
             // ViewModels
+            sc.AddTransient<HomeViewModel>();
             sc.AddTransient<ListViewModel>();
             sc.AddTransient<TrendsViewModel>();
             sc.AddTransient<CalculatorViewModel>();
@@ -22,31 +24,11 @@ namespace ViewFine.Composition
             sc.AddTransient<FaqViewModel>();
             sc.AddSingleton<MainViewModel>();
 
-            // Navigation services
-            sc.AddTransient<INavigationService<ListViewModel>>(sp =>
-                new NavigationService<ListViewModel>(
-                    sp.GetRequiredService<NavigationStore>(),
-                    () => sp.GetRequiredService<ListViewModel>()));
+            sc.AddTransient<Func<PenaltyCategory, ListViewModel>>(sp => cat =>
+                new ListViewModel(sp.GetRequiredService<IDbService>(), cat));
 
-            sc.AddTransient<INavigationService<TrendsViewModel>>(sp =>
-                new NavigationService<TrendsViewModel>(
-                    sp.GetRequiredService<NavigationStore>(),
-                    () => sp.GetRequiredService<TrendsViewModel>()));
-
-            sc.AddTransient<INavigationService<CalculatorViewModel>>(sp =>
-                new NavigationService<CalculatorViewModel>(
-                    sp.GetRequiredService<NavigationStore>(),
-                    () => sp.GetRequiredService<CalculatorViewModel>()));
-
-            sc.AddTransient<INavigationService<UpdatesViewModel>>(sp =>
-                new NavigationService<UpdatesViewModel>(
-                    sp.GetRequiredService<NavigationStore>(),
-                    () => sp.GetRequiredService<UpdatesViewModel>()));
-
-            sc.AddTransient<INavigationService<FaqViewModel>>(sp =>
-                new NavigationService<FaqViewModel>(
-                    sp.GetRequiredService<NavigationStore>(),
-                    () => sp.GetRequiredService<FaqViewModel>()));
+            // 제네릭 네비게이션 서비스 등록 (모든 ViewModel에 대해 자동으로 적용)
+            sc.AddTransient(typeof(INavigationService<>), typeof(NavigationService<>));
 
             return sc;
         }

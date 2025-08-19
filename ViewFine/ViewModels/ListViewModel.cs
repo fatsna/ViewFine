@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ViewFine.Core;
 using ViewFine.Services;
+using ViewFine.Models;
+using ViewFine.ViewModels;
 
 namespace ViewFine.ViewModels
 {
@@ -13,12 +15,15 @@ namespace ViewFine.ViewModels
     {
         private readonly IDbService _db;
 
-        public ObservableCollection<PenaltyRow> Items { get; } = new();
+        public ObservableCollection<PenaltyItem> Items { get; } = new();
+
+
         public ICollectionView View { get; }
 
         [ObservableProperty] private string? _searchText;
+        [ObservableProperty] private PenaltyCategory selectedCategory;
 
-        public ListViewModel(IDbService db)
+        public ListViewModel(IDbService db, PenaltyCategory initial = PenaltyCategory.All)
         {
             _db = db;
             View = System.Windows.Data.CollectionViewSource.GetDefaultView(Items);
@@ -40,11 +45,11 @@ namespace ViewFine.ViewModels
         partial void OnSearchTextChanged(string? value) => View.Refresh();
 
         [RelayCommand]
-        public async Task LoadAsync()
+        public async Task LoadAsync(string? search = null)
         {
             Items.Clear();
-            var rows = await _db.GetMergedPenaltiesAsync(); // 서버측 검색 원하면 param 활용
-            foreach (var r in rows) Items.Add(r);
+            var rows = await _db.GetMergedPenaltiesAsync(_searchText,selectedCategory); // 서버측 검색 원하면 param 활용
+            foreach (var r in rows) Items.Add(new PenaltyItem(r));
             View.Refresh();
         }
     }

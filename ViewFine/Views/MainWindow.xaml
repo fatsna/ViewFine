@@ -1,24 +1,50 @@
 <Window x:Class="ViewFine.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ViewFine - 별표28" Height="720" Width="1180">
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        Title="ViewFine" Height="860" Width="520"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource PhoneBg}">
+    <!-- 가운데에 폰 프레임 -->
+    <Grid>
+        <Border Width="420" Height="780" CornerRadius="28"
+            Background="{StaticResource PhonePanel}"
+            BorderBrush="#E6EAF2" BorderThickness="1"
+            HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="56"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <!-- Top Nav -->
-        <StackPanel Orientation="Horizontal">
-            <Button Content="목록"     Command="{Binding NavigateListCommand}"/>
-            <Button Content="지역비교" Command="{Binding NavigateTrendsCommand}"/>
-            <Button Content="계산기"   Command="{Binding NavigateCalcCommand}"/>
-            <Button Content="개정알림" Command="{Binding NavigateUpdatesCommand}"/>
-            <Button Content="상황카드" Command="{Binding NavigateFaqCommand}"/>
-            <TextBlock Text="{Binding StatusText}" Margin="12,0,0,0" VerticalAlignment="Center"/>
-        </StackPanel>
+                <!-- AppBar (Back + Title) -->
+                <Grid Background="#FFFFFF" SnapsToDevicePixels="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-        <!-- Content -->
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+                    <!-- ← 뒤로가기 -->
+                    <Button Grid.Column="0"
+                            Command="{Binding DataContext.BackCommand,
+                     RelativeSource={RelativeSource AncestorType=Window}}"
+                            IsEnabled="{Binding DataContext.CanGoBack,
+                     RelativeSource={RelativeSource AncestorType=Window}}"
+                     ToolTip="뒤로가기" Background="Transparent" BorderThickness="0" Padding="0">
+                        <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                       Foreground="{StaticResource PhoneAccent}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Button>
+
+                    <TextBlock Grid.Column="1" Text="별표 28 도우미"
+                     Foreground="{StaticResource PhoneText}" FontSize="18"
+                     VerticalAlignment="Center" />
+                    <Border Grid.RowSpan="1" BorderBrush="#EDEFF5" BorderThickness="0,0,0,1"/>
+                </Grid>
+
+                <!-- Content -->
+                <Border Grid.Row="1" Background="#F8FAFF" CornerRadius="0,0,28,28" Padding="16">
+                    <ContentControl Content="{Binding CurrentViewModel}"/>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

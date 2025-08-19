@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="ViewFine.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="8,0,8,10">
+            <TextBlock Text="무엇을 하시겠어요?" Foreground="{StaticResource PhoneText}"
+                 FontSize="22" FontWeight="Bold" />
+            <TextBlock Text="카테고리 선택 후 작업을 시작하세요"
+                 Foreground="{StaticResource PhoneSub}" FontSize="12"/>
+        </StackPanel>
+
+        <!-- 타일: 전체목록 제거, 취소/정지(벌점)만 남김 -->
+        <ScrollViewer Grid.Row="1">
+            <UniformGrid Columns="2" Rows="0">
+                <!-- 취소 처분 -->
+                <Button Style="{StaticResource CardButton}" Command="{Binding OpenCancelCommand}">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="42"
+                       Foreground="{StaticResource PhoneAccent}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="취소 처분" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Button>
+
+                <!-- 정지(벌점) -->
+                <Button Style="{StaticResource CardButton}" Command="{Binding OpenSuspendCommand}">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="42"
+                       Foreground="{StaticResource PhoneAccent}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="정지(벌점)" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Button>
+
+                <!-- 이하 보조 메뉴는 그대로 유지 -->
+                <Button Style="{StaticResource CardButton}" Command="{Binding OpenTrendsCommand}">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="42"
+                       Foreground="{StaticResource PhoneAccent}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="지역비교 추세" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource CardButton}" Command="{Binding OpenCalcCommand}">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="42"
+                       Foreground="{StaticResource PhoneAccent}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="벌점/과태료 계산기" Margin="0,6,0,0" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource CardButton}" Command="{Binding OpenUpdatesCommand}">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="42"
+                       Foreground="{StaticResource PhoneAccent}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="최근 변경/개정" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource CardButton}" Command="{Binding OpenFaqCommand}">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="42"
+                       Foreground="{StaticResource PhoneAccent}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="상황별 카드" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Button>
+            </UniformGrid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

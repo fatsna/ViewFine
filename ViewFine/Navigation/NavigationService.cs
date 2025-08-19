@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Navigation/NavigationService.cs
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ViewFine.Navigation
 {
@@ -10,17 +8,18 @@ namespace ViewFine.Navigation
         where TViewModel : class
     {
         private readonly NavigationStore _store;
-        private readonly Func<TViewModel> _factory;
+        private readonly IServiceProvider _serviceProvider;
 
-        public NavigationService(NavigationStore store, Func<TViewModel> factory)
+        public NavigationService(NavigationStore store, IServiceProvider serviceProvider)
         {
             _store = store;
-            _factory = factory;
+            _serviceProvider = serviceProvider;
         }
 
         public void Navigate()
         {
-            _store.CurrentViewModel = _factory();
+            var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
+            _store.NavigateTo(viewModel); // 히스토리에 추가하며 네비게이션
         }
     }
 }

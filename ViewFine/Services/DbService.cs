@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Threading.Tasks;
 using ViewFine.Core;
+using ViewFine.Models;
 
 namespace ViewFine.Services
 {
@@ -65,20 +66,24 @@ namespace ViewFine.Services
             var dt = new DataTable(); dt.Load(rd); return dt;
         }
 
-        public async Task<List<PenaltyRow>> GetMergedPenaltiesAsync(string? search = null)
+        // 인터페이스와 동일한 순서로 정렬
+        // 카테고리별 검색 (첫 번째)
+        public async Task<IEnumerable<PenaltyRow>> GetMergedPenaltiesAsync(string? search, PenaltyCategory category)
         {
             await OpenAsync();
             var list = new List<PenaltyRow>();
 
-            // 취소(벌점 없음)
-            using (var cmd = _conn.CreateCommand())
+            // 취소 테이블
+            if (category == PenaltyCategory.All || category == PenaltyCategory.Cancel)
             {
+                using var cmd = _conn.CreateCommand();
                 cmd.CommandText = @"
                     SELECT '취소' AS category, item_no, item_label_full, law_ref_short, NULL as points, revised_date
                     FROM byeol28_cancel";
                 if (!string.IsNullOrWhiteSpace(search))
                     cmd.CommandText += " WHERE item_no LIKE @q OR item_label_full LIKE @q OR law_ref_short LIKE @q OR notes LIKE @q";
                 cmd.CommandText += " ORDER BY CAST(REPLACE(item_no,'의','.') AS REAL), item_no;";
+
                 if (!string.IsNullOrWhiteSpace(search))
                     cmd.Parameters.AddWithValue("@q", $"%{search}%");
 
@@ -96,15 +101,17 @@ namespace ViewFine.Services
                 }
             }
 
-            // 정지(가)
-            using (var cmd = _conn.CreateCommand())
+            // 정지(가) 테이블
+            if (category == PenaltyCategory.All || category == PenaltyCategory.SuspendA)
             {
+                using var cmd = _conn.CreateCommand();
                 cmd.CommandText = @"
                     SELECT '정지(가)' AS category, item_no, item_label_full, law_ref_short, points, revised_date
                     FROM byeol28_suspendA";
                 if (!string.IsNullOrWhiteSpace(search))
                     cmd.CommandText += " WHERE item_no LIKE @q OR item_label_full LIKE @q OR law_ref_short LIKE @q";
                 cmd.CommandText += " ORDER BY CAST(REPLACE(item_no,'의','.') AS REAL), item_no;";
+
                 if (!string.IsNullOrWhiteSpace(search))
                     cmd.Parameters.AddWithValue("@q", $"%{search}%");
 
@@ -123,6 +130,12 @@ namespace ViewFine.Services
             }
 
             return list;
+        }
+
+        // 모든 카테고리 검색 (두 번째)
+        public async Task<IEnumerable<PenaltyRow>> GetMergedPenaltiesAsync(string? search = null)
+        {
+            return await GetMergedPenaltiesAsync(search, PenaltyCategory.All);
         }
 
         public async ValueTask DisposeAsync()

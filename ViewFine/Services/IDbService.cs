@@ -1,7 +1,8 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using ViewFine.Core;
+using ViewFine.Models;
 
 namespace ViewFine.Services
 {
@@ -13,6 +14,7 @@ namespace ViewFine.Services
         Task<DataTable> GetSuspendAAsync();
 
         // 목록 화면에서 사용할 통합 데이터(취소 + 정지(가))
-        Task<List<PenaltyRow>> GetMergedPenaltiesAsync(string? search = null);
+        Task<IEnumerable<PenaltyRow>> GetMergedPenaltiesAsync(string? search, PenaltyCategory category);
+        Task<IEnumerable<PenaltyRow>> GetMergedPenaltiesAsync(string? search = null);
     }
 }
