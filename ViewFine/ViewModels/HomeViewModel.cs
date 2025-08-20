@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using ViewFine.Models;
 using ViewFine.Navigation;
 using System;
+using ViewFine.Services;
+using System.Diagnostics;
 
 namespace ViewFine.ViewModels
 {

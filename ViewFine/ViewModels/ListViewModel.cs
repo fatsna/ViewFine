@@ -48,9 +48,10 @@ namespace ViewFine.ViewModels
         public async Task LoadAsync(string? search = null)
         {
             Items.Clear();
-            var rows = await _db.GetMergedPenaltiesAsync(_searchText,selectedCategory); // 서버측 검색 원하면 param 활용
+            var rows = await _db.GetMergedPenaltiesAsync(_searchText, selectedCategory); // 서버측 검색 원하면 param 활용
             foreach (var r in rows) Items.Add(new PenaltyItem(r));
             View.Refresh();
         }
+
     }
 }
